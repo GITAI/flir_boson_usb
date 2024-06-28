@@ -479,9 +479,11 @@ void BosonCamera::captureAndPublish(const ros::TimerEvent &evt)
       // 8bit image (auto range)
       double min, max;
       minMaxLoc(thermal8_linear, &min, &max);
-      if ((max - min) != 0)
+      double min_threshold = std::min(min - norm_margin, 0.0);
+      double max_threshold = std::max(max + norm_margin, 255.0);
+      if ((max_threshold - min_threshold) != 0)
       {
-        thermal8_norm = (thermal8_linear - min) * (255 - 0) / (max - min);
+        thermal8_norm = (thermal8_linear - min_threshold) * (255 - 0) / (max_threshold - min_threshold);
       }
       else
       {
@@ -595,4 +597,5 @@ void BosonCamera::reconfigureCallback(
   point_y = config.point_y;
   max_temp_limit = config.max_temp_limit;
   min_temp_limit = config.min_temp_limit;
+  norm_margin = config.norm_margin;
 }

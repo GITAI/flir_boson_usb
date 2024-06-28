@@ -125,6 +125,7 @@ class BosonCamera : public nodelet::Nodelet
     // Dynamic reconfigure parameters
     int point_x, point_y;
     int max_temp_limit, min_temp_limit;
+    double norm_margin;
 };
 
 }  // namespace flir_boson_usb
